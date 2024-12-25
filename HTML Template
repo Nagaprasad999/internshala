@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trending Topics</title>
+</head>
+<body>
+    <h1>Twitter Trending Topics</h1>
+    <button onclick="runScript()">Click here to run the script</button>
+    <div id="result"></div>
+
+    <script>
+        async function runScript() {
+            const response = await fetch('/run-script');
+            const data = await response.json();
+            const resultDiv = document.getElementById('result');
+
+            if (data.error) {
+                resultDiv.innerHTML = `<p>Error: ${data.error}</p>`;
+            } else {
+                const trends = `
+                    <p>These are the most happening topics as on ${data.data.timestamp}:</p>
+                    <ul>
+                        <li>${data.data.trend1}</li>
+                        <li>${data.data.trend2}</li>
+                        <li>${data.data.trend3}</li>
+                        <li>${data.data.trend4}</li>
+                        <li>${data.data.trend5}</li>
+                    </ul>
+                    <p>The IP address used for this query was ${data.data.ip_address}.</p>
+                `;
+                resultDiv.innerHTML = trends;
+            }
+        }
+    </script>
+</body>
+</html>
